@@ -434,6 +434,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "baseAPR",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -486,6 +499,19 @@
 			{
 				"inputs": [],
 				"name": "cooldownPeriod",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "currentAPR",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -654,6 +680,45 @@
 			},
 			{
 				"inputs": [],
+				"name": "multiplierCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "multiplierDuration",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "multiplierResetTime",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "name",
 				"outputs": [
 					{
@@ -798,19 +863,6 @@
 					}
 				],
 				"name": "stakedBalances",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "stakingAPR",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -980,6 +1032,13 @@
 					}
 				],
 				"name": "unstake",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "updateAPR",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -1170,7 +1229,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"FatCatCoin.sol": "FatCatCoin"
+			"FCC-final.sol": "FatCatCoin"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -1376,12 +1435,12 @@
 				"dweb:/ipfs/QmVUSvooZKEdEdap619tcJjTLcAuH6QBdZqAzWwnAXZAWJ"
 			]
 		},
-		"FatCatCoin.sol": {
-			"keccak256": "0x95ed49d8432106e44427cb0aa3a842d76a1a1f22bea6913fdba80b8068c4eeba",
+		"FCC-final.sol": {
+			"keccak256": "0xeb4c8f56061ae0736c5b9517ad84870e3353b45be17c21a4302242da0e7700ca",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3fbccaac407ae02413d01ed8132ad090e4bce32e9b9cad605e967baeaba81a25",
-				"dweb:/ipfs/QmRRfe8aJ5kH75nrbocj9SCYrETxvra6oBcSpNp6JvKdVe"
+				"bzz-raw://3be585fdfc1275e2137b6fb3f1b19ef0d9b92b57694c086c675e134728bfe4c7",
+				"dweb:/ipfs/QmZg1GaJDhQD3cDai3G2NnEW93AxQ4gnWmoeuTPyB1Y2rd"
 			]
 		}
 	},
