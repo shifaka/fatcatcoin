@@ -7,115 +7,86 @@ import {ERC20Burnable} from "@openzeppelin/contracts@5.1.0/token/ERC20/extension
 import {ERC20Permit} from "@openzeppelin/contracts@5.1.0/token/ERC20/extensions/ERC20Permit.sol";
 
 contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
-    mapping(address => uint256) private _stakes;
-    mapping(address => uint256) private _stakeTimestamps;
+    uint256 public constant STAKING_POOL = 300_000_000 * 10 ** 18; // 30% of total supply
+    uint256 public constant APR = 30; // 30% APR
+    uint256 public immutable stakingStartTime;
 
-    uint256 public constant APR = 30; // 30% Annual Percentage Rate
-    uint256 public constant SECONDS_IN_YEAR = 365 days;
-    uint256 public immutable STAKING_POOL_ALLOCATION; // Initialized in constructor
+    mapping(address => uint256) public stakedBalances;
+    mapping(address => uint256) public stakingTimestamps;
 
-    uint256 private _stakingPool;
-
-    event Staked(address indexed staker, uint256 amount);
-    event Unstaked(address indexed staker, uint256 amount, uint256 rewards);
+    uint256 public stakingPoolBalance;
 
     constructor(address defaultAdmin)
         ERC20("FatCatCoin", "FAT")
         ERC20Permit("FatCatCoin")
     {
-        uint256 totalSupply = 1000000000 * 10 ** decimals();
-        _mint(msg.sender, totalSupply);
-
-        // Initialize staking pool with 30% of the total supply
-        STAKING_POOL_ALLOCATION = (totalSupply * 30) / 100;
-        _stakingPool = STAKING_POOL_ALLOCATION;
-
+        _mint(msg.sender, 1_000_000_000 * 10 ** decimals());
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
+        stakingPoolBalance = STAKING_POOL;
+        stakingStartTime = block.timestamp;
     }
 
-    /**
-     * @dev Stake tokens.
-     */
+    /// @notice Stake tokens into the staking pool
     function stake(uint256 amount) external {
-        require(amount > 0, "Cannot stake zero tokens");
-        require(balanceOf(msg.sender) >= amount, "Insufficient balance to stake");
+        require(amount > 0, "Amount must be greater than 0");
+        require(balanceOf(msg.sender) >= amount, "Insufficient balance");
+        require(stakingPoolBalance >= amount, "Not enough tokens in the staking pool");
 
-        // Add rewards for previous staking period, if applicable
-        if (_stakes[msg.sender] > 0) {
-            uint256 rewards = calculateRewards(msg.sender);
-            distributeRewards(msg.sender, rewards);
-        }
-
-        _stakes[msg.sender] += amount;
-        _stakeTimestamps[msg.sender] = block.timestamp;
-
+        // Transfer tokens to the contract
         _transfer(msg.sender, address(this), amount);
-        emit Staked(msg.sender, amount);
+
+        // Update staking data
+        stakedBalances[msg.sender] += amount;
+        stakingTimestamps[msg.sender] = block.timestamp;
+
+        stakingPoolBalance -= amount;
     }
 
-    /**
-     * @dev Unstake tokens and claim rewards.
-     */
-    function unstake(uint256 amount) external {
-        require(amount > 0, "Cannot unstake zero tokens");
-        require(_stakes[msg.sender] >= amount, "Insufficient staked balance");
+    /// @notice Unstake tokens and claim rewards
+    // Declare the event
+    event Unstake(address indexed user, uint256 stakedAmount, uint256 reward);
 
-        uint256 rewards = calculateRewards(msg.sender);
-        _stakes[msg.sender] -= amount;
+    function unstake() external {
+        uint256 stakedAmount = stakedBalances[msg.sender];
+        require(stakedAmount > 0, "No tokens staked");
 
-        // Reset timestamp if no tokens remain staked
-        if (_stakes[msg.sender] == 0) {
-            _stakeTimestamps[msg.sender] = 0;
-        } else {
-            _stakeTimestamps[msg.sender] = block.timestamp;
-        }
+        uint256 stakingDuration = block.timestamp - stakingTimestamps[msg.sender];
+        uint256 reward = calculateRewards(stakedAmount, stakingDuration);
 
-        distributeRewards(msg.sender, rewards);
-        _transfer(address(this), msg.sender, amount);
+        // Ensure the staking pool has enough balance for the reward
+        require(stakingPoolBalance >= reward, "Insufficient staking pool balance");
 
-        emit Unstaked(msg.sender, amount, rewards);
+        // Update staking pool balance
+        stakingPoolBalance -= reward;
+
+        // Reset user staking data
+        stakedBalances[msg.sender] = 0;
+        stakingTimestamps[msg.sender] = 0;
+
+        // Transfer staked amount + reward from the contract to the user
+        _transfer(address(this), msg.sender, stakedAmount + reward);
+
+        // Emit the Unstake event
+        emit Unstake(msg.sender, stakedAmount, reward);
     }
 
-    /**
-     * @dev Distribute rewards from the staking pool.
-     */
-    function distributeRewards(address recipient, uint256 rewards) internal {
-        require(_stakingPool >= rewards, "Not enough tokens in staking pool");
-        _stakingPool -= rewards;
-        _transfer(address(this), recipient, rewards);
+
+    /// @notice Calculate rewards based on staked amount and time
+    function calculateRewards(uint256 amount, uint256 duration) public pure returns (uint256) {
+        return (amount * APR * duration) / (365 days * 100);
     }
 
-    /**
-     * @dev Calculate staking rewards for an account based on APR and staking duration.
-     */
-    function calculateRewards(address account) public view returns (uint256) {
-        if (_stakes[account] == 0 || _stakeTimestamps[account] == 0) {
-            return 0;
-        }
+    /// @notice View the rewards for a staker
+    function checkRewards(address staker) external view returns (uint256) {
+        uint256 stakedAmount = stakedBalances[staker];
+        if (stakedAmount == 0) return 0;
 
-        uint256 stakingDuration = block.timestamp - _stakeTimestamps[account];
-        uint256 yearlyRewards = (_stakes[account] * APR) / 100;
-        return (yearlyRewards * stakingDuration) / SECONDS_IN_YEAR;
+        uint256 stakingDuration = block.timestamp - stakingTimestamps[staker];
+        return calculateRewards(stakedAmount, stakingDuration);
     }
 
-    /**
-     * @dev View staked balance of an account.
-     */
-    function stakedBalance(address account) external view returns (uint256) {
-        return _stakes[account];
-    }
-
-    /**
-     * @dev View total rewards earned so far by an account.
-     */
-    function viewRewards(address account) external view returns (uint256) {
-        return calculateRewards(account);
-    }
-
-    /**
-     * @dev View remaining tokens in the staking pool.
-     */
-    function stakingPoolBalance() external view returns (uint256) {
-        return _stakingPool;
+    /// @notice View the balance of the staking pool
+    function getStakingPoolBalance() external view returns (uint256) {
+        return stakingPoolBalance;
     }
 }
