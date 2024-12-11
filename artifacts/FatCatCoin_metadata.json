@@ -791,19 +791,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "owner",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -1280,7 +1267,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"fatcatcoinSECURE.sol": "FatCatCoin"
+			"FatCatCoin.sol": "FatCatCoin"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -1534,12 +1521,12 @@
 				"dweb:/ipfs/QmVUSvooZKEdEdap619tcJjTLcAuH6QBdZqAzWwnAXZAWJ"
 			]
 		},
-		"fatcatcoinSECURE.sol": {
-			"keccak256": "0x5e31661857afae6881cb8742d8ac1cbb5f28c13d9926abdb09f55a129452fc73",
+		"FatCatCoin.sol": {
+			"keccak256": "0x2b3722de6597685c52dbb08f64d60405cf08df0fe4f1c3dc596b5bda3c3c602d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://cad70e6e88d09fab44908eb20186497b99132df14fbfe02ffb6cb2495276dc12",
-				"dweb:/ipfs/QmSbnY3h5QVUbnMC3fbpGCy9DsKQXMDqjhkXWVwQKopAEv"
+				"bzz-raw://5f64c133b4ca2f3884968e0c50a1e4b78283cecf5b6c04ba2dcc80f60fc31180",
+				"dweb:/ipfs/QmTH7X7XBQGvVKvyTqXR4ktru3Q9kLWnAki3Uk7MLjLfVC"
 			]
 		}
 	},

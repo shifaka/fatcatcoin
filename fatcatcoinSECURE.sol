@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-//pragma solidity ^0.8.22;
 pragma solidity 0.8.26;
 
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
@@ -19,16 +18,11 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     uint256 public rewardsPaid; // Total amount of rewards paid out
     uint256 public cooldownPeriod = 1 minutes; // Cooldown period for unstaking
 
-    // Staking-related mappings
-    // mapping(address user => uint256 balance) public stakedBalances; // User's staked tokens
-    // mapping(address user => uint256 lastStakingTime) public stakingTimestamps; // Last staking time for each user
-
+    // Staking-related mappings    
     struct StakingInfo {
         uint256 balance; // Staked tokens
         uint256 lastStakingTime; // Timestamp of last staking
     }
-    //mapping(address => StakingInfo) public stakingData;
-
     mapping(address user => StakingInfo info) public stakingData;
 
     // Optimized Events with Indexed Parameters    
@@ -38,31 +32,30 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     event TokensUnstaked(address indexed user, uint256 amount, uint256 rewards);
     event TransferBlocked(address indexed from, address indexed to, uint256 amount);
 
-    address private _thisAddress = address(this);
-    address public owner;
+    address private _thisAddress = address(this);    
 
     constructor(address defaultAdmin)
         ERC20("FatCatCoin", "FAT")
         ERC20Permit("FatCatCoin")
     {        
         uint256 totalSupply = 1e9 * 1e18;
+        address localThisAddress = _thisAddress;
+
         _mint(msg.sender, totalSupply); // Mint all tokens
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
-
+        
         // Freeze 10% of the total supply for 180 days
         uint256 teamTokens = totalSupply / 10;
         frozenTokens = teamTokens;
         freezeReleaseTime = block.timestamp + 1 minutes; // For testing, 1 minute (change for production)
-        
+
         // Transfer frozen tokens to the contract address for locking
-        _transfer(msg.sender, _thisAddress, teamTokens);
+        _transfer(msg.sender, localThisAddress, teamTokens);
 
         // Reserve 30% of the total supply for the staking pool
         uint256 stakingTokens = totalSupply * 30 / 100;
         stakingPool = stakingTokens;
-        _transfer(msg.sender, _thisAddress, stakingTokens); // Transfer staking tokens to the contract
-
-        owner = msg.sender;
+        _transfer(msg.sender, localThisAddress, stakingTokens); // Transfer staking tokens to the contract
 
         emit TokensFrozen(teamTokens);
     }
@@ -76,7 +69,8 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     // Override the transfer function to block transfers of frozen tokens
     function transfer(address recipient, uint256 amount) public override onlyInvestor returns (bool) {
         // If the tokens are frozen and the freeze period has not passed, prevent transfer
-        if (balanceOf(_thisAddress) >= frozenTokens ) {
+        address localThisAddress = _thisAddress;
+        if (balanceOf(localThisAddress) >= frozenTokens ) {
             require(block.timestamp > freezeReleaseTime, "Tokens are still frozen");
             emit TransferBlocked(msg.sender, recipient, amount); // Emit event if transfer is blocked
         }
@@ -91,13 +85,19 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         address recipient,
         uint256 amount
     ) public override onlyInvestor returns (bool) {
+        // Cache state variables in memory
+        uint256 cachedBalance = balanceOf(_thisAddress);
+        uint256 cachedFrozenTokens = frozenTokens;
+        uint256 localFreezeReleaseTime = freezeReleaseTime;
+        address localThisAddress = _thisAddress;        
+
         // If the tokens are frozen and the freeze period has not passed, prevent transfer
-        if (balanceOf(_thisAddress) >= frozenTokens ) {
-            require(block.timestamp > freezeReleaseTime, "Tokens are still frozen");
+        if (cachedBalance >= cachedFrozenTokens) {
+            require(block.timestamp > localFreezeReleaseTime, "Tokens are still frozen");
             emit TransferBlocked(sender, recipient, amount); // Emit event if transfer is blocked
         }
 
-        ERC20(_thisAddress).safeTransferFrom(sender, recipient, amount); // Safe transfer
+        ERC20(localThisAddress).safeTransferFrom(sender, recipient, amount); // Safe transfer
         return true;
     }
 
@@ -108,11 +108,12 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
 
     // Function to unfreeze tokens and transfer them to the contract deployer's address
     function unfreezeTokens() public onlyRole(DEFAULT_ADMIN_ROLE) {
-        require(block.timestamp > freezeReleaseTime, "Tokens are still frozen");
-
+        uint256 localFreezeReleaseTime = freezeReleaseTime;
+        require(block.timestamp > localFreezeReleaseTime, "Tokens are still frozen");
         uint256 frozenAmount = frozenTokens;
+        address localThisAddress = _thisAddress;
         frozenTokens = 0; // Reset the frozenTokens variable
-        _transfer(_thisAddress, msg.sender, frozenAmount);
+        _transfer(localThisAddress, msg.sender, frozenAmount);
 
         emit TokensUnfrozen(frozenAmount); // Emit event on unfreezing tokens
     }
@@ -121,15 +122,16 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     function stake(uint256 amount) public onlyInvestor {
         require(amount != 0, "Amount must be greater than 0");
         require(balanceOf(msg.sender) > amount - 1, "Insufficient balance to stake");
+        address localThisAddress = _thisAddress;
+        uint256 localTotalStaked = totalStaked;
 
         // Transfer the tokens from the user to the contract for staking
-        _transfer(msg.sender, _thisAddress, amount);
+        _transfer(msg.sender, localThisAddress, amount);
 
         // Update the user's staked balance and the total staked amount
         //stakedBalances[msg.sender] = stakedBalances[msg.sender] + amount;
         stakingData[msg.sender].balance = stakingData[msg.sender].balance + amount;
-
-        totalStaked = totalStaked + amount;
+        totalStaked = localTotalStaked + amount;
 
         // Record the staking timestamp
         // stakingTimestamps[msg.sender] = block.timestamp;
@@ -144,27 +146,19 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         uint256 userStakingTimestamp = stakingData[msg.sender].lastStakingTime;
         
         require(userStakedBalance > amount - 1, "Insufficient staked balance");
-        
-        // Ensure the cooldown period has passed since staking
         require(block.timestamp > userStakingTimestamp + cooldownPeriod, "Cooldown period not passed");
-        
         // Calculate staking rewards
         uint256 rewards = calculateRewards(msg.sender);
-        
-        // Update the user's staked balance and total staked amount
-        //stakedBalances[msg.sender] = userStakedBalance - amount;
+        address localThisAddress = _thisAddress;  
+        // Update the user's staked balance and total staked amount        
         stakingData[msg.sender].balance = userStakedBalance - amount;
         totalStaked = totalStaked - amount;
-
         // Deduct the rewards from the staking pool
         stakingPool = stakingPool - rewards;
-        rewardsPaid = rewardsPaid + rewards;
-
+        rewardsPaid = rewardsPaid + rewards;        
         // Transfer staked tokens and rewards back to the user
-        _transfer(_thisAddress, msg.sender, amount + rewards);
-        
+        _transfer(localThisAddress, msg.sender, amount + rewards);        
         // Reset staking timestamp as the user has unstaked
-        //stakingTimestamps[msg.sender] = 0;
         stakingData[msg.sender].lastStakingTime = 0;
 
         emit TokensUnstaked(msg.sender, amount, rewards); // Emit event when tokens are unstaked and rewards are paid
@@ -172,11 +166,8 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
 
     // Function to calculate the staking rewards based on 30% APR
     function calculateRewards(address user) public onlyInvestor view returns (uint256 rewards) {
-        uint256 stakedAmount = stakingData[msg.sender].balance;
-        //uint256 stakingDuration = block.timestamp - stakingTimestamps[user];
+        uint256 stakedAmount = stakingData[msg.sender].balance;        
         uint256 stakingDuration = block.timestamp - stakingData[user].lastStakingTime;
-        
-        
         // Calculate the annual rewards based on 30% APR
         uint256 annualRewards = (stakedAmount * stakingAPR) / 100;
 
