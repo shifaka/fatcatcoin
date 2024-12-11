@@ -59,16 +59,16 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         emit TokensFrozen(teamTokens);
     }
 
-    // Modifier code if not imported
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Caller is not the owner");
+    // Modifier to ensure the caller has tokens in their balance or has staked tokens
+    modifier onlyInvestor() {
+        require(balanceOf(msg.sender) > 0 || stakedBalances[msg.sender] > 0, "Caller is not an investor (no tokens or staked tokens)");
         _;
     }
 
     // Override the transfer function to block transfers of frozen tokens
-    function transfer(address recipient, uint256 amount) public override onlyOwner returns (bool) {
+    function transfer(address recipient, uint256 amount) public override onlyInvestor returns (bool) {
         // If the tokens are frozen and the freeze period has not passed, prevent transfer
-        if (balanceOf(_thisAddress) >= frozenTokens) {
+        if (balanceOf(_thisAddress) > frozenTokens - 1) {
             require(block.timestamp > freezeReleaseTime, "Tokens are still frozen");
             emit TransferBlocked(msg.sender, recipient, amount); // Emit event if transfer is blocked
         }
@@ -82,9 +82,9 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         address sender,
         address recipient,
         uint256 amount
-    ) public override onlyOwner returns (bool) {
+    ) public override onlyInvestor returns (bool) {
         // If the tokens are frozen and the freeze period has not passed, prevent transfer
-        if (balanceOf(_thisAddress) >= frozenTokens) {
+        if (balanceOf(_thisAddress) > frozenTokens - 1) {
             require(block.timestamp > freezeReleaseTime, "Tokens are still frozen");
             emit TransferBlocked(sender, recipient, amount); // Emit event if transfer is blocked
         }
@@ -95,7 +95,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
 
     // Function to check if the freeze period is over
     function isFreezePeriodOver() public view returns (bool) {
-        return block.timestamp >= freezeReleaseTime;
+        return block.timestamp > freezeReleaseTime;
     }
 
     // Function to unfreeze tokens and transfer them to the contract deployer's address
@@ -110,9 +110,9 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     }
 
     // Function to stake tokens
-    function stake(uint256 amount) public onlyOwner {
+    function stake(uint256 amount) public onlyInvestor {
         require(amount != 0, "Amount must be greater than 0");
-        require(balanceOf(msg.sender) >= amount, "Insufficient balance to stake");
+        require(balanceOf(msg.sender) > amount - 1, "Insufficient balance to stake");
 
         // Transfer the tokens from the user to the contract for staking
         _transfer(msg.sender, _thisAddress, amount);
@@ -128,11 +128,11 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     }
 
     // Function to unstake tokens and claim rewards, with cooldown period enforcement
-    function unstake(uint256 amount) public onlyOwner {
+    function unstake(uint256 amount) public onlyInvestor {
         uint256 userStakedBalance = stakedBalances[msg.sender];
         uint256 userStakingTimestamp = stakingTimestamps[msg.sender];
         
-        require(userStakedBalance >= amount, "Insufficient staked balance");
+        require(userStakedBalance > amount - 1, "Insufficient staked balance");
         
         // Ensure the cooldown period has passed since staking
         require(block.timestamp > userStakingTimestamp + cooldownPeriod, "Cooldown period not passed");
@@ -158,7 +158,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     }
 
     // Function to calculate the staking rewards based on 30% APR
-    function calculateRewards(address user) public onlyOwner view returns (uint256 rewards) {
+    function calculateRewards(address user) public onlyInvestor view returns (uint256 rewards) {
         uint256 stakedAmount = stakedBalances[user];
         uint256 stakingDuration = block.timestamp - stakingTimestamps[user];
         
