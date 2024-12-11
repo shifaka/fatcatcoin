@@ -31,12 +31,13 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     event TransferBlocked(address indexed from, address indexed to, uint256 amount);
 
     address private _thisAddress = address(this);
+    address public owner;
 
     constructor(address defaultAdmin)
         ERC20("FatCatCoin", "FAT")
         ERC20Permit("FatCatCoin")
-    {
-        uint256 totalSupply = 1e9 * 10 ** decimals();
+    {        
+        uint256 totalSupply = 1e9 * 1e18;
         _mint(msg.sender, totalSupply); // Mint all tokens
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
 
@@ -53,11 +54,19 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         stakingPool = stakingTokens;
         _transfer(msg.sender, _thisAddress, stakingTokens); // Transfer staking tokens to the contract
 
+        owner = msg.sender;
+
         emit TokensFrozen(teamTokens);
     }
 
+    // Modifier code if not imported
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Caller is not the owner");
+        _;
+    }
+
     // Override the transfer function to block transfers of frozen tokens
-    function transfer(address recipient, uint256 amount) public override returns (bool) {
+    function transfer(address recipient, uint256 amount) public override onlyOwner returns (bool) {
         // If the tokens are frozen and the freeze period has not passed, prevent transfer
         if (balanceOf(_thisAddress) >= frozenTokens) {
             require(block.timestamp > freezeReleaseTime, "Tokens are still frozen");
@@ -73,7 +82,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         address sender,
         address recipient,
         uint256 amount
-    ) public override returns (bool) {
+    ) public override onlyOwner returns (bool) {
         // If the tokens are frozen and the freeze period has not passed, prevent transfer
         if (balanceOf(_thisAddress) >= frozenTokens) {
             require(block.timestamp > freezeReleaseTime, "Tokens are still frozen");
@@ -101,7 +110,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     }
 
     // Function to stake tokens
-    function stake(uint256 amount) public {
+    function stake(uint256 amount) public onlyOwner {
         require(amount != 0, "Amount must be greater than 0");
         require(balanceOf(msg.sender) >= amount, "Insufficient balance to stake");
 
@@ -119,7 +128,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     }
 
     // Function to unstake tokens and claim rewards, with cooldown period enforcement
-    function unstake(uint256 amount) public {
+    function unstake(uint256 amount) public onlyOwner {
         uint256 userStakedBalance = stakedBalances[msg.sender];
         uint256 userStakingTimestamp = stakingTimestamps[msg.sender];
         
@@ -149,7 +158,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     }
 
     // Function to calculate the staking rewards based on 30% APR
-    function calculateRewards(address user) public view returns (uint256 rewards) {
+    function calculateRewards(address user) public onlyOwner view returns (uint256 rewards) {
         uint256 stakedAmount = stakedBalances[user];
         uint256 stakingDuration = block.timestamp - stakingTimestamps[user];
         

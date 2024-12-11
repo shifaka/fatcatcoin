@@ -791,6 +791,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -1536,11 +1549,11 @@
 			]
 		},
 		"fatcatcoinSECURE.sol": {
-			"keccak256": "0x867f1520e453b72bddbebe71e4ac06b34ee4c116394310442e671061bc715d35",
+			"keccak256": "0x62f6a4d368fe9899d0f21d231a814fff6b42a1bd37b5a5a094bf54e68621fd0d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://008d1ce1fb071217252728e8166c43bdefcf88d06893efb2d34fbfb5a239883a",
-				"dweb:/ipfs/QmVRwNiijXh4PQbW7jVKQGi3JtjyMTC1yuj11CTB69A63X"
+				"bzz-raw://db0d7da8ddfe9e3e45159f2b2187e8fec250638f48d0b449a31ca137958722da",
+				"dweb:/ipfs/QmbbrSZVbFbcrsoA3CTzSUUYcpcMFLpyWjddDRb9TtwnXw"
 			]
 		}
 	},
