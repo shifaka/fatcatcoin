@@ -68,7 +68,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     // Override the transfer function to block transfers of frozen tokens
     function transfer(address recipient, uint256 amount) public override onlyInvestor returns (bool) {
         // If the tokens are frozen and the freeze period has not passed, prevent transfer
-        if (balanceOf(_thisAddress) > frozenTokens - 1) {
+        if (balanceOf(_thisAddress) >= frozenTokens ) {
             require(block.timestamp > freezeReleaseTime, "Tokens are still frozen");
             emit TransferBlocked(msg.sender, recipient, amount); // Emit event if transfer is blocked
         }
@@ -84,7 +84,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         uint256 amount
     ) public override onlyInvestor returns (bool) {
         // If the tokens are frozen and the freeze period has not passed, prevent transfer
-        if (balanceOf(_thisAddress) > frozenTokens - 1) {
+        if (balanceOf(_thisAddress) >= frozenTokens ) {
             require(block.timestamp > freezeReleaseTime, "Tokens are still frozen");
             emit TransferBlocked(sender, recipient, amount); // Emit event if transfer is blocked
         }
