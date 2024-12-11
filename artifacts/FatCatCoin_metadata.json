@@ -1535,11 +1535,11 @@
 			]
 		},
 		"FatCatCoin.sol": {
-			"keccak256": "0xd0f6469e711cdbfb9ccab76f7275cc0dabdb376fa90bf8e397e4665759c60059",
+			"keccak256": "0x22435be94ba7c86c602336f7a59b46a14c3098e59d45ec6c8cee87ec8fd3170c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://9874bde2d2feebf4b72449ee72849b132b364d2db92c49cfad233b60fd03b755",
-				"dweb:/ipfs/QmZbnhvzVgw7wcEkV8bjYfvo2TYESfnn3DQFsLqbsZzLKU"
+				"bzz-raw://2501ba14031d9e3515ab856f1ea3007d14da91830a3b80e9b8d49ce073182453",
+				"dweb:/ipfs/QmbsR2uYoujTQcwUtZ1cbs6UorUfcHwfudZWwaG2NY4Wz6"
 			]
 		}
 	},
