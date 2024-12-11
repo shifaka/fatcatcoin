@@ -20,8 +20,16 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     uint256 public cooldownPeriod = 1 minutes; // Cooldown period for unstaking
 
     // Staking-related mappings
-    mapping(address user => uint256 balance) public stakedBalances; // User's staked tokens
-    mapping(address user => uint256 lastStakingTime) public stakingTimestamps; // Last staking time for each user
+    // mapping(address user => uint256 balance) public stakedBalances; // User's staked tokens
+    // mapping(address user => uint256 lastStakingTime) public stakingTimestamps; // Last staking time for each user
+
+    struct StakingInfo {
+        uint256 balance; // Staked tokens
+        uint256 lastStakingTime; // Timestamp of last staking
+    }
+    //mapping(address => StakingInfo) public stakingData;
+
+    mapping(address user => StakingInfo info) public stakingData;
 
     // Optimized Events with Indexed Parameters    
     event TokensFrozen(uint256 amount);
@@ -61,7 +69,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
 
     // Modifier to ensure the caller has tokens in their balance or has staked tokens
     modifier onlyInvestor() {
-        require(balanceOf(msg.sender) > 0 || stakedBalances[msg.sender] > 0, "Caller is not an investor (no tokens or staked tokens)");
+        require(balanceOf(msg.sender) > 0 || stakingData[msg.sender].balance > 0, "Caller is not an investor (no tokens or staked tokens)");
         _;
     }
 
@@ -118,19 +126,22 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         _transfer(msg.sender, _thisAddress, amount);
 
         // Update the user's staked balance and the total staked amount
-        stakedBalances[msg.sender] = stakedBalances[msg.sender] + amount;
+        //stakedBalances[msg.sender] = stakedBalances[msg.sender] + amount;
+        stakingData[msg.sender].balance = stakingData[msg.sender].balance + amount;
+
         totalStaked = totalStaked + amount;
 
         // Record the staking timestamp
-        stakingTimestamps[msg.sender] = block.timestamp;
+        // stakingTimestamps[msg.sender] = block.timestamp;
+        stakingData[msg.sender].lastStakingTime = block.timestamp;
 
         emit TokensStaked(msg.sender, amount); // Emit event when tokens are staked
     }
 
     // Function to unstake tokens and claim rewards, with cooldown period enforcement
     function unstake(uint256 amount) public onlyInvestor {
-        uint256 userStakedBalance = stakedBalances[msg.sender];
-        uint256 userStakingTimestamp = stakingTimestamps[msg.sender];
+        uint256 userStakedBalance = stakingData[msg.sender].balance;
+        uint256 userStakingTimestamp = stakingData[msg.sender].lastStakingTime;
         
         require(userStakedBalance > amount - 1, "Insufficient staked balance");
         
@@ -141,7 +152,8 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         uint256 rewards = calculateRewards(msg.sender);
         
         // Update the user's staked balance and total staked amount
-        stakedBalances[msg.sender] = userStakedBalance - amount;
+        //stakedBalances[msg.sender] = userStakedBalance - amount;
+        stakingData[msg.sender].balance = userStakedBalance - amount;
         totalStaked = totalStaked - amount;
 
         // Deduct the rewards from the staking pool
@@ -152,15 +164,18 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         _transfer(_thisAddress, msg.sender, amount + rewards);
         
         // Reset staking timestamp as the user has unstaked
-        stakingTimestamps[msg.sender] = 0;
+        //stakingTimestamps[msg.sender] = 0;
+        stakingData[msg.sender].lastStakingTime = 0;
 
         emit TokensUnstaked(msg.sender, amount, rewards); // Emit event when tokens are unstaked and rewards are paid
     }
 
     // Function to calculate the staking rewards based on 30% APR
     function calculateRewards(address user) public onlyInvestor view returns (uint256 rewards) {
-        uint256 stakedAmount = stakedBalances[user];
-        uint256 stakingDuration = block.timestamp - stakingTimestamps[user];
+        uint256 stakedAmount = stakingData[msg.sender].balance;
+        //uint256 stakingDuration = block.timestamp - stakingTimestamps[user];
+        uint256 stakingDuration = block.timestamp - stakingData[user].lastStakingTime;
+        
         
         // Calculate the annual rewards based on 30% APR
         uint256 annualRewards = (stakedAmount * stakingAPR) / 100;

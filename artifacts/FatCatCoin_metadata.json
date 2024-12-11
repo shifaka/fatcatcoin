@@ -909,25 +909,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "user",
-						"type": "address"
-					}
-				],
-				"name": "stakedBalances",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "balance",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [],
 				"name": "stakingAPR",
 				"outputs": [
@@ -941,19 +922,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "stakingPool",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -961,11 +929,29 @@
 						"type": "address"
 					}
 				],
-				"name": "stakingTimestamps",
+				"name": "stakingData",
 				"outputs": [
 					{
 						"internalType": "uint256",
+						"name": "balance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "lastStakingTime",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "stakingPool",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
 						"type": "uint256"
 					}
 				],
@@ -1549,11 +1535,11 @@
 			]
 		},
 		"fatcatcoinSECURE.sol": {
-			"keccak256": "0x65849081dc3aa1d57780aeda8645dcd2e1c47428372b00e19f55fad2b526d219",
+			"keccak256": "0x5e31661857afae6881cb8742d8ac1cbb5f28c13d9926abdb09f55a129452fc73",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://4d606330ea4397461cdf382b1773873c57a042a097efced670e9f1023c910bac",
-				"dweb:/ipfs/QmcDFbo2onvkJBdWfn5KYN7DxXt2J72NtmAcS6Fa5RoL79"
+				"bzz-raw://cad70e6e88d09fab44908eb20186497b99132df14fbfe02ffb6cb2495276dc12",
+				"dweb:/ipfs/QmSbnY3h5QVUbnMC3fbpGCy9DsKQXMDqjhkXWVwQKopAEv"
 			]
 		}
 	},
