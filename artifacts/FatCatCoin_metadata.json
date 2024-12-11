@@ -946,6 +946,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "strokeFatCatCat",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "bytes4",
@@ -1522,11 +1535,11 @@
 			]
 		},
 		"FatCatCoin.sol": {
-			"keccak256": "0x2b3722de6597685c52dbb08f64d60405cf08df0fe4f1c3dc596b5bda3c3c602d",
+			"keccak256": "0xd0f6469e711cdbfb9ccab76f7275cc0dabdb376fa90bf8e397e4665759c60059",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5f64c133b4ca2f3884968e0c50a1e4b78283cecf5b6c04ba2dcc80f60fc31180",
-				"dweb:/ipfs/QmTH7X7XBQGvVKvyTqXR4ktru3Q9kLWnAki3Uk7MLjLfVC"
+				"bzz-raw://9874bde2d2feebf4b72449ee72849b132b364d2db92c49cfad233b60fd03b755",
+				"dweb:/ipfs/QmZbnhvzVgw7wcEkV8bjYfvo2TYESfnn3DQFsLqbsZzLKU"
 			]
 		}
 	},
