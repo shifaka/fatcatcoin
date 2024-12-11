@@ -67,7 +67,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         return block.timestamp >= freezeReleaseTime;
     }
 
-    function unfreezeTokens() public {
+    function unfreezeTokens() public onlyRole(DEFAULT_ADMIN_ROLE) {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Only the admin can unfreeze tokens");
         require(block.timestamp >= freezeReleaseTime, "The freeze period has not yet ended");
 

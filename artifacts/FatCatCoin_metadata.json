@@ -319,6 +319,82 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "releaseTime",
+						"type": "uint256"
+					}
+				],
+				"name": "TokensFrozen",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "TokensStaked",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "TokensUnfrozen",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "rewards",
+						"type": "uint256"
+					}
+				],
+				"name": "TokensUnstaked",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": true,
 						"internalType": "address",
 						"name": "from",
@@ -338,6 +414,31 @@
 					}
 				],
 				"name": "Transfer",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "TransferBlocked",
 				"type": "event"
 			},
 			{
@@ -434,19 +535,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "baseAPR",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -499,19 +587,6 @@
 			{
 				"inputs": [],
 				"name": "cooldownPeriod",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "currentAPR",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -680,45 +755,6 @@
 			},
 			{
 				"inputs": [],
-				"name": "multiplierCount",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "multiplierDuration",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "multiplierResetTime",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "name",
 				"outputs": [
 					{
@@ -863,6 +899,19 @@
 					}
 				],
 				"name": "stakedBalances",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "stakingAPR",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -1032,13 +1081,6 @@
 					}
 				],
 				"name": "unstake",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "updateAPR",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -1229,7 +1271,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"FCC-final.sol": "FatCatCoin"
+			"fatcatcoinSECURE.sol": "FatCatCoin"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -1435,12 +1477,12 @@
 				"dweb:/ipfs/QmVUSvooZKEdEdap619tcJjTLcAuH6QBdZqAzWwnAXZAWJ"
 			]
 		},
-		"FCC-final.sol": {
-			"keccak256": "0xeb4c8f56061ae0736c5b9517ad84870e3353b45be17c21a4302242da0e7700ca",
+		"fatcatcoinSECURE.sol": {
+			"keccak256": "0x36b8d94fc0f7aa7a3b042ebd4bfebc997fcb6584f49bb7024402d9dc5bda6f11",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3be585fdfc1275e2137b6fb3f1b19ef0d9b92b57694c086c675e134728bfe4c7",
-				"dweb:/ipfs/QmZg1GaJDhQD3cDai3G2NnEW93AxQ4gnWmoeuTPyB1Y2rd"
+				"bzz-raw://c667ca09de79011948ea82587b2f999d9102ae853e44768f76d355330753f2ee",
+				"dweb:/ipfs/QmUS2hFJJSSFfNZu7TsD4pjGGwWDe3JyWGQd4r9bCerHaJ"
 			]
 		}
 	},
