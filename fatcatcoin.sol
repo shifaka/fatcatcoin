@@ -64,32 +64,6 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         _;
     }
 
-    function transfer(address recipient, uint256 amount) public override onlyInvestor returns (bool) {
-        address localThisAddress = _thisAddress;
-        if (balanceOf(localThisAddress) >= frozenTokens) {
-            require(block.timestamp > freezeReleaseTime, "Tokens are still frozen");
-            emit TransferBlocked(msg.sender, recipient, amount);
-        }
-
-        super.transfer(recipient, amount);
-        return true;
-    }
-
-    function transferFrom(
-        address sender,
-        address recipient,
-        uint256 amount
-    ) public override onlyInvestor returns (bool) {
-        address localThisAddress = _thisAddress;
-        if (balanceOf(localThisAddress) >= frozenTokens) {
-            require(block.timestamp > freezeReleaseTime, "Tokens are still frozen");
-            emit TransferBlocked(sender, recipient, amount);
-        }
-
-        ERC20(localThisAddress).safeTransferFrom(sender, recipient, amount);
-        return true;
-    }
-
     function isFreezePeriodOver() public view returns (bool) {
         return block.timestamp > freezeReleaseTime;
     }

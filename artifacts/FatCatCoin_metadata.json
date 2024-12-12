@@ -201,17 +201,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
-						"name": "token",
-						"type": "address"
-					}
-				],
-				"name": "SafeERC20FailedOperation",
-				"type": "error"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "string",
 						"name": "str",
 						"type": "string"
@@ -1052,12 +1041,12 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "recipient",
+						"name": "to",
 						"type": "address"
 					},
 					{
 						"internalType": "uint256",
-						"name": "amount",
+						"name": "value",
 						"type": "uint256"
 					}
 				],
@@ -1076,17 +1065,17 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "sender",
+						"name": "from",
 						"type": "address"
 					},
 					{
 						"internalType": "address",
-						"name": "recipient",
+						"name": "to",
 						"type": "address"
 					},
 					{
 						"internalType": "uint256",
-						"name": "amount",
+						"name": "value",
 						"type": "uint256"
 					}
 				],
@@ -1215,11 +1204,6 @@
 					{
 						"details": "The nonce used for an `account` is not the expected current nonce."
 					}
-				],
-				"SafeERC20FailedOperation(address)": [
-					{
-						"details": "An operation with an ERC-20 token failed."
-					}
 				]
 			},
 			"events": {
@@ -1300,6 +1284,12 @@
 				},
 				"totalSupply()": {
 					"details": "See {IERC20-totalSupply}."
+				},
+				"transfer(address,uint256)": {
+					"details": "See {IERC20-transfer}. Requirements: - `to` cannot be the zero address. - the caller must have a balance of at least `value`."
+				},
+				"transferFrom(address,address,uint256)": {
+					"details": "See {IERC20-transferFrom}. Skips emitting an {Approval} event indicating an allowance update. This is not required by the ERC. See {xref-ERC20-_approve-address-address-uint256-bool-}[_approve]. NOTE: Does not update the allowance if the current allowance is the maximum `uint256`. Requirements: - `from` and `to` cannot be the zero address. - `from` must have a balance of at least `value`. - the caller must have allowance for ``from``'s tokens of at least `value`."
 				}
 			},
 			"version": 1
@@ -1320,7 +1310,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -1567,11 +1557,11 @@
 			]
 		},
 		"fatcatcoin.sol": {
-			"keccak256": "0x5f9e7cc20a75435ed82c668560bc2e125ba61ba059a07ee56327fa293c3b82f1",
+			"keccak256": "0x80523663827534421971d452f8a4d6ba020b03bf0753c48c0adf63c6926471bb",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://f8a048b74f3ded2334c3befdee39cee2a4646307706dd3ec1ef91c50002dd404",
-				"dweb:/ipfs/QmfEqGpFdH7wGyscmSmSvA4TypxUuQwzhaiGFwDwfgpnfP"
+				"bzz-raw://83abab70bfd773363c50facaa5f3fb9460496eb64f6fd2556e1b71b471e49803",
+				"dweb:/ipfs/QmZ7YYis69Aqj1xdBfMuSjdaxZ5vh3winbtdhRjC32EMxg"
 			]
 		}
 	},
