@@ -33,6 +33,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     event TokensStaked(address indexed user, uint256 amount);
     event TokensUnstaked(address indexed user, uint256 amount, uint256 rewards);
     event TransferBlocked(address indexed from, address indexed to, uint256 amount);
+    event StakingPoolFilluped(address indexed admin, uint256 amount);
 
     address private _thisAddress = address(this);
 
@@ -143,6 +144,16 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         uint256 annualRewards = (stakedAmount * apr) / 100;
 
         rewards = (annualRewards * stakingDuration) / 365 days;
+    }
+
+    function addToStakingPool(uint256 amount) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(amount != 0, "Amount must be greater than zero");
+        require(balanceOf(msg.sender) > amount - 1, "Insufficient admin balance");
+        
+        _transfer(msg.sender, _thisAddress, amount);        
+        stakingPool = stakingPool + amount;
+
+        emit StakingPoolFilluped(msg.sender, amount);
     }
 
     function strokeFatCatCat() public pure returns (string memory) {

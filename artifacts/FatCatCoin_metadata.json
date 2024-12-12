@@ -330,6 +330,25 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "StakingPoolFilluped",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": false,
 						"internalType": "uint256",
 						"name": "amount",
@@ -470,6 +489,19 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "addToStakingPool",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -1280,7 +1312,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"FatCatCoin.sol": "FatCatCoin"
+			"fatcatcoin.sol": "FatCatCoin"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -1534,12 +1566,12 @@
 				"dweb:/ipfs/QmVUSvooZKEdEdap619tcJjTLcAuH6QBdZqAzWwnAXZAWJ"
 			]
 		},
-		"FatCatCoin.sol": {
-			"keccak256": "0x22435be94ba7c86c602336f7a59b46a14c3098e59d45ec6c8cee87ec8fd3170c",
+		"fatcatcoin.sol": {
+			"keccak256": "0x5f9e7cc20a75435ed82c668560bc2e125ba61ba059a07ee56327fa293c3b82f1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://2501ba14031d9e3515ab856f1ea3007d14da91830a3b80e9b8d49ce073182453",
-				"dweb:/ipfs/QmbsR2uYoujTQcwUtZ1cbs6UorUfcHwfudZWwaG2NY4Wz6"
+				"bzz-raw://f8a048b74f3ded2334c3befdee39cee2a4646307706dd3ec1ef91c50002dd404",
+				"dweb:/ipfs/QmfEqGpFdH7wGyscmSmSvA4TypxUuQwzhaiGFwDwfgpnfP"
 			]
 		}
 	},

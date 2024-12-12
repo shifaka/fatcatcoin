@@ -37,6 +37,20 @@ Welcome to the **Fat Cat Coin** smart contract repository! 🎉 FAT is a super c
 - `isFreezePeriodOver()`: Check if the team tokens are still frozen. ❄️
 - `unfreezeTokens()`: Admin-only function to release frozen team tokens once the freeze period is over. 🔓
 
+#### **Add to Staking Pool**
+- `addToStakingPool(uint256 amount)`: Admin-only function to add more tokens to the staking pool. 🏦 This ensures that the staking rewards remain sustainable for the community. 💪
+
+  **Usage:**
+  - Transfers the specified amount of FAT tokens from the admin to the contract address.
+  - Updates the staking pool balance.
+
+  **Requirements:**
+  - The `amount` must be greater than zero.
+  - The admin must have a sufficient balance to perform the transfer.
+
+  **Event:**
+  - `StakingPoolFilluped(address indexed admin, uint256 amount)`: Emitted when tokens are added to the staking pool. 🎉
+
 #### **Special Easter Egg** 🥚
 - `strokeFatCatCat()`: Displays a cute ASCII art of the Fat Cat. 😺
 
@@ -76,6 +90,7 @@ Welcome to the **Fat Cat Coin** smart contract repository! 🎉 FAT is a super c
 - `TokensStaked(address indexed user, uint256 amount)`: Emitted when a user stakes tokens. 💎
 - `TokensUnstaked(address indexed user, uint256 amount, uint256 rewards)`: Emitted when a user unstakes tokens and receives rewards. 🎁
 - `TransferBlocked(address indexed from, address indexed to, uint256 amount)`: Emitted when a transfer attempt fails during the freeze period. 🚫
+- `StakingPoolFilluped(address indexed admin, uint256 amount)`: Emitted when tokens are added to the staking pool. 🏦
 
 ---
 
