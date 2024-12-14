@@ -1,0 +1,92 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentNonce",
+						"type": "uint256"
+					}
+				],
+				"name": "InvalidAccountNonce",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					}
+				],
+				"name": "nonces",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "Provides tracking nonces for addresses. Nonces will only increment.",
+			"errors": {
+				"InvalidAccountNonce(address,uint256)": [
+					{
+						"details": "The nonce used for an `account` is not the expected current nonce."
+					}
+				]
+			},
+			"kind": "dev",
+			"methods": {
+				"nonces(address)": {
+					"details": "Returns the next unused nonce for an address."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"fatcatcoin_flattened.sol": "Nonces"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"fatcatcoin_flattened.sol": {
+			"keccak256": "0xdda9c617e0be571af6fd25cc0edbfb098a3f128eb608f0460ec7f6039d2ad348",
+			"urls": [
+				"bzz-raw://6f0e1121478aaade4816c60e31a008992cbdc0153454e9af00b5d8322ac167d2",
+				"dweb:/ipfs/QmXdiBZg6z3PQmXFfx2BButFSWmuAVawRJiTTfNY59h8ZW"
+			]
+		}
+	},
+	"version": 1
+}
