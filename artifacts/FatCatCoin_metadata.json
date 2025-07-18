@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.30+commit.73712a01"
+		"version": "0.8.26+commit.8a97fa7a"
 	},
 	"language": "Solidity",
 	"output": {
@@ -1304,7 +1304,7 @@
 		"compilationTarget": {
 			"fatcatcoin.sol": "FatCatCoin"
 		},
-		"evmVersion": "prague",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -1557,11 +1557,11 @@
 			]
 		},
 		"fatcatcoin.sol": {
-			"keccak256": "0x3cf681cab93fd380d8d5ac8bcfa68beda4bcf71a4c50a1235bec608886d1b653",
+			"keccak256": "0xed6c544d63e74a86698919956175abedbb76e58ca90f27239fc74285e7ad6540",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://9dcef7afbdbff4d978cd8948b200d3718510a9e0a4c47f06e37c463b86e92546",
-				"dweb:/ipfs/QmaCraDRXFB97U5NUiiNXaAFqb5irj1jJXN5n95kThJEAh"
+				"bzz-raw://33a0b62c6aa88fb8ab8c2749d14ce7bcf1972a724ee1be1807698b136367de51",
+				"dweb:/ipfs/QmaUz4xu1FDxUxNafsYzreo38cUS5xwapCA6wSpaWodEqr"
 			]
 		}
 	},

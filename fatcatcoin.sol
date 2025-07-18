@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 // fatcatcoin.io
-// FAT token smart contract 2.0: 1mln total supply / 100% APR
+// FAT token smart contract 2.0: 1mln total supply / 100%
 
-pragma solidity ^0.8.26;
+pragma solidity 0.8.26;
 
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -52,7 +52,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         freezeReleaseTime = block.timestamp + 180 days;
         _transfer(msg.sender, localThisAddress, teamTokens);
 
-        uint256 stakingTokens = totalSupply * 30 / 100;
+        uint256 stakingTokens = totalSupply * 40 / 100;
         stakingPool = stakingTokens;
         _transfer(msg.sender, localThisAddress, stakingTokens);
 

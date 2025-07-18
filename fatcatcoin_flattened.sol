@@ -4585,15 +4585,14 @@ library SafeERC20 {
 
 
 // fatcatcoin.io
-// FAT token smart contract 2.0: 1mln total supply / 100% APR
+// FAT token smart contract 2.0: 1mln total supply / 100%
 
-pragma solidity ^0.8.26;
+pragma solidity 0.8.26;
 
-import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import {ERC20Burnable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+
+
+
+
 
 contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     using SafeERC20 for ERC20;
