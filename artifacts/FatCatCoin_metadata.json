@@ -1557,11 +1557,11 @@
 			]
 		},
 		"fatcatcoin.sol": {
-			"keccak256": "0xd9412302a8a4c31757c3774f02b68891a95b6480693b9d015652f3d843e70369",
+			"keccak256": "0xed6c544d63e74a86698919956175abedbb76e58ca90f27239fc74285e7ad6540",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d5351779c7850a2085093150df5f00ca8b68a4e456eb370f91b55b91d1eb0aa0",
-				"dweb:/ipfs/QmYoToHWjSf8Z95agZMXALaKF7Xo7W1jN21egbVeJm3nFW"
+				"bzz-raw://33a0b62c6aa88fb8ab8c2749d14ce7bcf1972a724ee1be1807698b136367de51",
+				"dweb:/ipfs/QmaUz4xu1FDxUxNafsYzreo38cUS5xwapCA6wSpaWodEqr"
 			]
 		}
 	},

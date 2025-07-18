@@ -52,7 +52,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         freezeReleaseTime = block.timestamp + 180 days;
         _transfer(msg.sender, localThisAddress, teamTokens);
 
-        uint256 stakingTokens = totalSupply * 30 / 100;
+        uint256 stakingTokens = totalSupply * 40 / 100;
         stakingPool = stakingTokens;
         _transfer(msg.sender, localThisAddress, stakingTokens);
 
