@@ -4585,14 +4585,15 @@ library SafeERC20 {
 
 
 // fatcatcoin.io
-// FAT token smart contract
+// FAT token smart contract 2.0: 1mln total supply / 100% APR
 
-pragma solidity 0.8.26;
+pragma solidity ^0.8.26;
 
-
-
-
-
+import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC20Burnable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     using SafeERC20 for ERC20;
@@ -4601,7 +4602,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
     uint256 public freezeReleaseTime;
     uint256 public stakingPool;
     uint256 public totalStaked;
-    uint256 public stakingAPR = 40;
+    uint256 public stakingAPR = 100;
     uint256 public rewardsPaid;
     uint256 public cooldownPeriod = 10 days;
 
@@ -4625,7 +4626,7 @@ contract FatCatCoin is ERC20, ERC20Burnable, ERC20Permit, AccessControl {
         ERC20("FatCatCoin", "FAT")
         ERC20Permit("FatCatCoin")
     {
-        uint256 totalSupply = 1e9 * 1e18;
+        uint256 totalSupply = 1_000_000 * 1e18;
         address localThisAddress = _thisAddress;
         _mint(msg.sender, totalSupply);
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
