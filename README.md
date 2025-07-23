@@ -7,20 +7,23 @@ Welcome to the **Fat Cat Coin** smart contract repository! 🎉 FAT is a super c
 ## 🌟 Key Features
 
 ### 💰 Total Supply
-- **1,000,000,000 FAT tokens** minted at launch.
+- **1,000,000 FAT tokens** minted at launch.
+- Extremely **limited supply** – only **1 million tokens** will ever exist! 🔥
 
 ### 🧾 Tokenomics
 - **10% Team Tokens:** Frozen for 180 days to ensure trust and long-term commitment. 🔒
-- **30% Staking Pool:** Dedicated to rewarding the community for staking their FAT tokens. 🏦
+- **40% Staking Pool:** Frozen and dedicated to rewarding the community for staking their FAT tokens. 🏦
 
 ### 📈 Staking
-- Earn an **amazing 40% APR** by staking your FAT tokens. 🎉
+- Earn an **crazy 100% APR** by staking your FAT tokens. 🎉
 - Staking comes with a **10-day cooldown period** before unstaking is allowed. ⏳
 - Rewards are calculated based on staking duration and added to your unstaked amount. 💸
+- 100% smart contract-based staking — your coins stay fully decentralized and in your control. 🔒
 
 ### 🛡️ Security Features
 - Team tokens are locked until the freeze period ends. ⛓️
 - Transfers are restricted for investors without holdings or staked tokens. 🚫
+- Staking reserve is securely locked by the smart contract.
 
 ---
 
@@ -60,19 +63,6 @@ Welcome to the **Fat Cat Coin** smart contract repository! 🎉 FAT is a super c
        > ^ <  
    The Fat Cat is watching you: fatcatcoin.io
 ```
-
----
-
-## ⚙️ How It Works
-
-1. **Freeze Period**:
-   - 10% of the total supply is frozen at contract creation. ❄️
-   - These tokens will be unfrozen only after 180 days. 🗓️
-2. **Staking Rewards**:
-   - Users stake FAT tokens and earn rewards proportional to their staking duration. 🤑
-   - Rewards are paid from the 30% staking pool. 💰
-3. **Cooldown Period**:
-   - After staking, a cooldown of 10 days is required before unstaking. ⏳
 
 ---
 
